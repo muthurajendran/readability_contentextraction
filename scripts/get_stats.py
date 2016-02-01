@@ -8,7 +8,7 @@ import sys,json
 from csv import DictWriter
 
 def write_to_excel(data_out):
-	with open('results_justext_goodbad.csv','w') as outfile:
+	with open('results_justext_feb1.csv','w') as outfile:
 		writer = DictWriter(outfile, ('id','url','Accuracy','Precision','Recall','Fscore','Jaccard Similarity'))
 		writer.writeheader()
 		writer.writerows(data_out)
