@@ -8,7 +8,7 @@ import sys,json
 from csv import DictWriter
 
 def write_to_excel(data_out):
-	with open('results.csv','w') as outfile:
+	with open('results_justext_goodbad.csv','w') as outfile:
 		writer = DictWriter(outfile, ('id','url','Accuracy','Precision','Recall','Fscore','Jaccard Similarity'))
 		writer.writeheader()
 		writer.writerows(data_out)
@@ -31,12 +31,14 @@ data_out = []
 for gold in gold_data:
 	try:
 		processed_data_item = processed_data[str(gold['uid'])]
-		temp = getAccuracyStats(gold['required'] + gold['optional'],processed_data_item['content'])
-		temp['Jaccard Similarity'] = jSimilarity(gold['required'] + gold['optional'],processed_data_item['content'])
+		ggContent = gold['required'] + gold['optional']
+		temp = getAccuracyStats(ggContent,processed_data_item['content'])
+		temp['Jaccard Similarity'] = jSimilarity(ggContent,processed_data_item['content'])
 		temp['url'],temp['id'] = gold['id'],gold['uid']
 		data_out.append(temp)
 	except Exception, e:
 		print "No id found with num "+ str(gold['uid']) +"! Skipping"
+		raise e
 
 if data_out:
 	write_to_excel(data_out)
