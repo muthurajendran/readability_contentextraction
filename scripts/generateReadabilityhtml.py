@@ -3,7 +3,9 @@ from bs4 import BeautifulSoup
 sys.path.insert(0, '/Users/Muthu/Sites/isi/readability_code/python_readability')
 from readability1.readability import Document
 from pprint import pprint
-import urllib
+#import urllib.request
+#from urllib.request import urlopen, Request
+import urllib2
 
 input_json_path = "./input/gt_data.json"
 
@@ -15,12 +17,13 @@ with open(input_json_path) as data_file:
 
 for data in input_data:
 	op_json = {}
-	html = urllib.urlopen(data['id']).read()
+
+	html = urllib2.urlopen(urllib2.Request(data['id'], headers={'User-Agent' : "Magic Browser"}) ).read()
 	readable_article = Document(html).summary(True)
 	writable_tag_data = readable_article.encode('utf-8')
 
 	#Save processed html files
-	f = open('./data_op_readability/file'+str(data['uid'])+".html",'w')
+	f = open('./data_op_readability/file_4_'+str(data['uid'])+".html",'w')
 	f.write(writable_tag_data) 
 	f.close()
 
